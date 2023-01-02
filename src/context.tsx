@@ -1,5 +1,4 @@
 import React, { createContext, MouseEvent, useContext, useState } from 'react'
-import sublinks from './data'
 
 interface InputProviderProps {
     children: React.ReactNode
@@ -28,7 +27,7 @@ const initialContext = {
 const AppContext = createContext<AppContextInterface>(initialContext)
 
 export const AppProvider = ({ children }: InputProviderProps) => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true)
+    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false)
     const [isSubmenuOpen, setIsSubmenuOpen] = useState<boolean>(true)
     const openSidebar = (): void => {
         setIsSidebarOpen(true)
