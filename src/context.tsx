@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-import sublinks from "./data";
+import React, { createContext, MouseEvent, useContext, useState } from 'react'
+import sublinks from './data'
 
 interface InputProviderProps {
     children: React.ReactNode
@@ -7,14 +7,25 @@ interface InputProviderProps {
 interface AppContextInterface {
     isSidebarOpen: boolean
     isSubmenuOpen: boolean
-    openSidebar: Function
-    closeSidebar: Function
-    openSubmenu: Function
-    closeSubmenu: Function
+    openSidebar: (event: MouseEvent<HTMLButtonElement>) => void
+    closeSidebar: (event: MouseEvent<HTMLButtonElement>) => void
+    openSubmenu: (event: MouseEvent<HTMLButtonElement>) => void
+    closeSubmenu: (event: MouseEvent<HTMLButtonElement>) => void
+    setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setIsSubmenuOpen: React.Dispatch<React.SetStateAction<boolean>>
+
 }
-
-
-const AppContext = createContext<AppContextInterface | null>(null)
+const initialContext = {
+    isSidebarOpen: true,
+    isSubmenuOpen: true,
+    openSidebar: () => null,
+    closeSidebar: () => null,
+    openSubmenu: () => null,
+    closeSubmenu: () => null,
+    setIsSidebarOpen: () => null,
+    setIsSubmenuOpen: () => null,
+}
+const AppContext = createContext<AppContextInterface>(initialContext)
 
 export const AppProvider = ({ children }: InputProviderProps) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true)
@@ -32,7 +43,22 @@ export const AppProvider = ({ children }: InputProviderProps) => {
         setIsSubmenuOpen(false)
     }
 
-    return <AppContext.Provider value={{ isSubmenuOpen, isSidebarOpen, openSidebar, closeSidebar, openSubmenu, closeSubmenu }}>{children}</AppContext.Provider>
+    return (
+        <AppContext.Provider
+            value={{
+                isSubmenuOpen,
+                isSidebarOpen,
+                openSidebar,
+                closeSidebar,
+                openSubmenu,
+                closeSubmenu,
+                setIsSubmenuOpen,
+                setIsSidebarOpen
+            }}
+        >
+            {children}
+        </AppContext.Provider>
+    )
 }
 export const useGlobalContext = () => {
     return useContext(AppContext)
