@@ -1,4 +1,5 @@
 import React, { createContext, MouseEvent, useContext, useState } from 'react'
+import sublinks from '../data/data'
 
 interface InputProviderProps {
     children: React.ReactNode
@@ -13,6 +14,7 @@ interface AppContextInterface {
     setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
     setIsSubmenuOpen: React.Dispatch<React.SetStateAction<boolean>>
     location: any
+    page: any
 
 }
 const initialContext = {
@@ -24,7 +26,11 @@ const initialContext = {
     closeSubmenu: () => null,
     setIsSidebarOpen: () => null,
     setIsSubmenuOpen: () => null,
-    location: null
+    location: {},
+    page: {
+        page: "",
+        links: []
+    }
 }
 const AppContext = createContext<AppContextInterface>(initialContext)
 
@@ -32,13 +38,17 @@ export const AppProvider = ({ children }: InputProviderProps) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false)
     const [isSubmenuOpen, setIsSubmenuOpen] = useState<boolean>(false)
     const [location, setLocation] = useState<object>({})
+    const [page, setPage] = useState<any>({ page: "", links: [] })
     const openSidebar = (): void => {
         setIsSidebarOpen(true)
     }
     const closeSidebar = (): void => {
         setIsSidebarOpen(false)
     }
-    const openSubmenu = (text: string, coordinates: any): any => {
+    const openSubmenu = (text: string, coordinates: object): void => {
+        const page = sublinks.find((link) => link.page === text)
+        console.log(page);
+        setPage(page)
         setLocation(coordinates)
         setIsSubmenuOpen(true)
     }
@@ -57,7 +67,8 @@ export const AppProvider = ({ children }: InputProviderProps) => {
                 closeSubmenu,
                 setIsSubmenuOpen,
                 setIsSidebarOpen,
-                location
+                location,
+                page
             }}
         >
             {children}
