@@ -10,7 +10,7 @@ interface AppContextInterface {
     openSidebar: (event: MouseEvent<HTMLButtonElement>) => void
     closeSidebar: (event: MouseEvent<HTMLButtonElement>) => void
     openSubmenu: Function
-    closeSubmenu: (event: MouseEvent<HTMLButtonElement>) => void
+    closeSubmenu: () => void
     setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
     setIsSubmenuOpen: React.Dispatch<React.SetStateAction<boolean>>
     location: any
@@ -47,7 +47,6 @@ export const AppProvider = ({ children }: InputProviderProps) => {
     }
     const openSubmenu = (text: string, coordinates: object): void => {
         const page = sublinks.find((link) => link.page === text)
-        console.log(page);
         setPage(page)
         setLocation(coordinates)
         setIsSubmenuOpen(true)
